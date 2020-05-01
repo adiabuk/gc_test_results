@@ -1,0 +1,393 @@
+-- MySQL dump 10.16  Distrib 10.1.44-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: greencandle
+-- ------------------------------------------------------
+-- Server version	10.1.24-MariaDB-1~jessie
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `balance`
+--
+
+DROP TABLE IF EXISTS `balance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `balance` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ctime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `exchange_id` int(11) unsigned NOT NULL,
+  `gbp` varchar(30) DEFAULT NULL,
+  `btc` varchar(30) DEFAULT NULL,
+  `usd` varchar(30) DEFAULT NULL,
+  `count` varchar(30) DEFAULT NULL,
+  `coin` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `exchange_id` (`exchange_id`),
+  CONSTRAINT `balance_ibfk_2` FOREIGN KEY (`exchange_id`) REFERENCES `exchange` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `balance`
+--
+
+LOCK TABLES `balance` WRITE;
+/*!40000 ALTER TABLE `balance` DISABLE KEYS */;
+/*!40000 ALTER TABLE `balance` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `coin`
+--
+
+DROP TABLE IF EXISTS `coin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `coin` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `symbol` varchar(10) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `coin`
+--
+
+LOCK TABLES `coin` WRITE;
+/*!40000 ALTER TABLE `coin` DISABLE KEYS */;
+/*!40000 ALTER TABLE `coin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `daily_profit`
+--
+
+DROP TABLE IF EXISTS `daily_profit`;
+/*!50001 DROP VIEW IF EXISTS `daily_profit`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `daily_profit` (
+  `date` tinyint NOT NULL,
+  `interval` tinyint NOT NULL,
+  `profit` tinyint NOT NULL,
+  `perc` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `exchange`
+--
+
+DROP TABLE IF EXISTS `exchange`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `exchange` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `exchange`
+--
+
+LOCK TABLES `exchange` WRITE;
+/*!40000 ALTER TABLE `exchange` DISABLE KEYS */;
+INSERT INTO `exchange` VALUES (3,'coinbase'),(4,'binance'),(5,'margin');
+/*!40000 ALTER TABLE `exchange` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `hour_balance`
+--
+
+DROP TABLE IF EXISTS `hour_balance`;
+/*!50001 DROP VIEW IF EXISTS `hour_balance`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `hour_balance` (
+  `exchange_id` tinyint NOT NULL,
+  `usd1` tinyint NOT NULL,
+  `coin` tinyint NOT NULL,
+  `ctime1` tinyint NOT NULL,
+  `ctime2` tinyint NOT NULL,
+  `usd2` tinyint NOT NULL,
+  `USD_diff` tinyint NOT NULL,
+  `GBP_diff` tinyint NOT NULL,
+  `COUNT_diff` tinyint NOT NULL,
+  `perc_change` tinyint NOT NULL,
+  `BTC_diff` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `monthly_profit`
+--
+
+DROP TABLE IF EXISTS `monthly_profit`;
+/*!50001 DROP VIEW IF EXISTS `monthly_profit`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `monthly_profit` (
+  `date` tinyint NOT NULL,
+  `interval` tinyint NOT NULL,
+  `profit` tinyint NOT NULL,
+  `perc` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `open_trades`
+--
+
+DROP TABLE IF EXISTS `open_trades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `open_trades` (
+  `pair` varchar(30) DEFAULT NULL,
+  `buy_price` varchar(30) DEFAULT NULL,
+  `buy_time` varchar(30) DEFAULT NULL,
+  `current_price` varchar(30) DEFAULT NULL,
+  `perc` varchar(30) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `open_trades`
+--
+
+LOCK TABLES `open_trades` WRITE;
+/*!40000 ALTER TABLE `open_trades` DISABLE KEYS */;
+/*!40000 ALTER TABLE `open_trades` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `profit`
+--
+
+DROP TABLE IF EXISTS `profit`;
+/*!50001 DROP VIEW IF EXISTS `profit`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `profit` (
+  `buy_time` tinyint NOT NULL,
+  `interval` tinyint NOT NULL,
+  `sell_time` tinyint NOT NULL,
+  `pair` tinyint NOT NULL,
+  `buy_price` tinyint NOT NULL,
+  `sell_price` tinyint NOT NULL,
+  `perc` tinyint NOT NULL,
+  `base_profit` tinyint NOT NULL,
+  `drawdown_perc` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `profitable`
+--
+
+DROP TABLE IF EXISTS `profitable`;
+/*!50001 DROP VIEW IF EXISTS `profitable`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `profitable` (
+  `pair` tinyint NOT NULL,
+  `total` tinyint NOT NULL,
+  `profit` tinyint NOT NULL,
+  `loss` tinyint NOT NULL,
+  `perc_profitable` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `symbols`
+--
+
+DROP TABLE IF EXISTS `symbols`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `symbols` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `symbol` varchar(10) DEFAULT NULL,
+  `category` varchar(20) DEFAULT NULL,
+  `maximum_leverage` int(11) DEFAULT NULL,
+  `maximum_amount` int(11) DEFAULT NULL,
+  `overnight_charge_long_percent` float DEFAULT NULL,
+  `overnight_charge_short_percent` float DEFAULT NULL,
+  `decimals` int(11) DEFAULT NULL,
+  `timezone` varchar(80) DEFAULT NULL,
+  `timezone_offset` varchar(10) DEFAULT NULL,
+  `open_day` varchar(80) DEFAULT NULL,
+  `open_time` time DEFAULT NULL,
+  `close_day` varchar(80) DEFAULT NULL,
+  `close_time` time DEFAULT NULL,
+  `daily_break_start` time DEFAULT NULL,
+  `daily_break_stop` time DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `symbol` (`symbol`),
+  KEY `category` (`category`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `symbols`
+--
+
+LOCK TABLES `symbols` WRITE;
+/*!40000 ALTER TABLE `symbols` DISABLE KEYS */;
+/*!40000 ALTER TABLE `symbols` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `trades`
+--
+
+DROP TABLE IF EXISTS `trades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trades` (
+  `buy_time` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `sell_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `pair` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `interval` varchar(3) DEFAULT NULL,
+  `buy_price` varchar(60) DEFAULT NULL,
+  `sell_price` varchar(30) DEFAULT NULL,
+  `base_in` varchar(30) DEFAULT NULL,
+  `base_out` varchar(30) DEFAULT NULL,
+  `quote_in` varchar(30) DEFAULT NULL,
+  `quote_out` varchar(30) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `closed_by` varchar(10) DEFAULT NULL,
+  `drawdown_perc` varchar(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `trades`
+--
+
+LOCK TABLES `trades` WRITE;
+/*!40000 ALTER TABLE `trades` DISABLE KEYS */;
+INSERT INTO `trades` VALUES ('2018-04-09 19:59:59','2018-04-12 11:59:59','OAXBTC','4h','0.000070530000000','0.000070990000000','0.033333333333333','0.033550734911857','472.6121272271846','472.612127227184601','test','test','0.87'),('2018-04-12 15:59:59','2018-04-14 15:59:59','OAXBTC','4h','0.000072730000000','0.000072540000000','0.033381644795228','0.033294438518436','458.9804041692225','458.980404169222481','test','test','1.62'),('2018-04-14 19:59:59','2018-04-21 11:59:59','OAXBTC','4h','0.000073140000000','0.000074090000000','0.033362265622607','0.033795601038815','456.14254337718234','456.142543377182335','test','test','0.0'),('2018-04-21 15:59:59','2018-04-21 19:59:59','OAXBTC','4h','0.000076230000000','0.000078860000000','0.033458562381764','0.034612911313471','438.91594361490814','438.915943614908144','test','test','0.0'),('2018-04-21 23:59:59','2018-04-22 03:59:59','OAXBTC','4h','0.000085560000000','0.000076040000000','0.033715084366588','0.029963709855486','394.05194444352765','394.051944443527645','test','test','11.1'),('2018-04-22 07:59:59','2018-04-25 03:59:59','OAXBTC','4h','0.000078080000000','0.000077590000000','0.032881445586343','0.032675094301285','421.12507154640537','421.125071546405366','test','test','0.62'),('2018-04-25 07:59:59','2018-04-25 11:59:59','OAXBTC','4h','0.000080290000000','0.000076850000000','0.032835589745219','0.031428759147093','408.96238317622783','408.962383176227831','test','test','4.28'),('2018-04-26 07:59:59','2018-05-03 19:59:59','OAXBTC','4h','0.000080490000000','0.000094540000000','0.032522960723414','0.038200033628917','404.06212850557284','404.062128505572844','test','test','0.0'),('2018-05-03 23:59:59','2018-05-04 15:59:59','OAXBTC','4h','0.000093150000000','0.000092090000000','0.033784532480192','0.033400081546977','362.68955963705844','362.689559637058437','test','test','1.13'),('2018-05-04 19:59:59','2018-05-04 23:59:59','OAXBTC','4h','0.000091840000000','0.000091570000000','0.033699098939478','0.033600027111150','366.93269751173295','366.932697511732954','test','test','0.29'),('2018-05-05 03:59:59','2018-05-05 07:59:59','OAXBTC','4h','0.000090500000000','0.000090010000000','0.033677082977627','0.033494742970345','372.12246384118106','372.122463841181059','test','test','0.54'),('2018-05-06 19:59:59','2018-05-06 23:59:59','OAXBTC','4h','0.000093470000000','0.000090910000000','0.033636562976009','0.032715309084722','359.8648012839271','359.864801283927079','test','test','2.73'),('2018-05-13 19:59:59','2018-05-13 23:59:59','OAXBTC','4h','0.000086900000000','0.000081270000000','0.033431839889056','0.031265887546416','384.7162242699194','384.716224269919394','test','test','6.47'),('2018-05-15 07:59:59','2018-05-15 23:59:59','OAXBTC','4h','0.000083400000000','0.000082150000000','0.032950517146247','0.032456654479187','395.09013364804684','395.090133648046844','test','test','1.49'),('2018-05-17 15:59:59','2018-05-17 19:59:59','OAXBTC','4h','0.000082440000000','0.000078970000000','0.032840769886900','0.031458461887051','398.359654135134','398.359654135134008','test','test','4.20'),('2018-05-21 03:59:59','2018-05-21 15:59:59','OAXBTC','4h','0.000080890000000','0.000081130000000','0.032533590331378','0.032630117240508','402.1954547085974','402.195454708597424','test','test','0.27'),('2018-05-30 11:59:59','2018-05-30 15:59:59','OAXBTC','4h','0.000074200000000','0.000071560000000','0.032555040755630','0.031396748200443','438.7471799950075','438.747179995007514','test','test','3.55'),('2018-05-31 03:59:59','2018-06-04 11:59:59','OAXBTC','4h','0.000073800000000','0.000074100000000','0.032297642410032','0.032428933639341','437.63743103024996','437.637431030249957','test','test','0.0'),('2018-06-06 23:59:59','2018-06-07 03:59:59','OAXBTC','4h','0.000074580000000','0.000075010000000','0.032326818238768','0.032513202414722','433.4515719866959','433.451571986695910','test','test','0.0'),('2018-06-07 07:59:59','2018-06-07 11:59:59','OAXBTC','4h','0.000074110000000','0.000076450000000','0.032368236944535','0.033390253871403','436.75937045655553','436.759370456555530','test','test','0.0'),('2018-06-07 15:59:59','2018-06-07 19:59:59','OAXBTC','4h','0.000075040000000','0.000074890000000','0.032595351817173','0.032530195863381','434.37302528215173','434.373025282151730','test','test','0.19'),('2018-06-07 23:59:59','2018-06-08 03:59:59','OAXBTC','4h','0.000074000000000','0.000072930000000','0.032580872716330','0.032109770908134','440.2820637341892','440.282063734189194','test','test','1.44'),('2018-07-01 23:59:59','2018-07-02 07:59:59','OAXBTC','4h','0.000053950000000','0.000051940000000','0.032476183425620','0.031266227379550','601.9681821245556','601.968182124555597','test','test','3.72'),('2018-07-02 11:59:59','2018-07-03 23:59:59','OAXBTC','4h','0.000052150000000','0.000053470000000','0.032207304304271','0.033022522744954','617.5897277904294','617.589727790429379','test','test','0.0'),('2018-07-04 00:22:26','2018-07-04 11:59:59','OAXBTC','4h','0.000052380000000','0.000054860000000','0.032388463957756','0.033921938387218','618.3364634928598','618.336463492859821','test','test','0.0'),('2018-07-04 15:59:59','2018-07-09 11:59:59','OAXBTC','4h','0.000056930000000','0.000055430000000','0.032729236053192','0.031866881335472','574.9031451465308','574.903145146530846','test','test','4.97'),('2018-07-09 15:59:59','2018-07-09 19:59:59','OAXBTC','4h','0.000057790000000','0.000055170000000','0.032537601671476','0.031062458629786','563.0316953015478','563.031695301547757','test','test','4.53'),('2018-07-15 15:59:59','2018-07-15 19:59:59','OAXBTC','4h','0.000052000000000','0.000051410000000','0.032209792106656','0.031844334850061','619.4190789741624','619.419078974162403','test','test','1.13'),('2018-07-16 07:59:59','2018-07-16 11:59:59','OAXBTC','4h','0.000052500000000','0.000052110000000','0.032128579382969','0.031889909936124','611.9729406279746','611.972940627974594','test','test','0.74'),('2018-07-16 15:59:59','2018-07-16 19:59:59','OAXBTC','4h','0.000053930000000','0.000053730000000','0.032075541728114','0.031956589227732','594.7625019120011','594.762501912001085','test','test','0.37'),('2018-07-16 23:59:59','2018-07-17 19:59:59','OAXBTC','4h','0.000052940000000','0.000051950000000','0.032049107839140','0.031449776204067','605.38548997243','605.385489972430037','test','test','1.87'),('2018-07-18 11:59:59','2018-07-18 15:59:59','OAXBTC','4h','0.000052550000000','0.000052670000000','0.031915923031346','0.031988804301827','607.343920672625','607.343920672625018','test','test','0.0'),('2018-08-24 07:59:59','2018-08-24 11:59:59','OAXBTC','4h','0.000025720000000','0.000025210000000','0.031932118869231','0.031298939218247','1241.528727419561','1241.528727419560937','test','test','1.98'),('2018-08-24 15:59:59','2018-08-24 19:59:59','OAXBTC','4h','0.000026400000000','0.000025000000000','0.031791412280124','0.030105504053148','1204.220162125892','1204.220162125892102','test','test','5.30'),('2018-08-25 19:59:59','2018-08-26 03:59:59','OAXBTC','4h','0.000025400000000','0.000025320000000','0.031416766007462','0.031317815563344','1236.8805514748904','1236.880551474890353','test','test','0.35'),('2018-08-26 07:59:59','2018-08-26 23:59:59','OAXBTC','4h','0.000025580000000','0.000025560000000','0.031394777019880','0.031370230673500','1227.3173189945442','1227.317318994544166','test','test','0.82'),('2018-08-27 03:59:59','2018-08-28 23:59:59','OAXBTC','4h','0.000025750000000','0.000025580000000','0.031389322276240','0.031182091799076','1219.002806844289','1219.002806844288898','test','test','0.66'),('2018-08-31 23:59:59','2018-09-01 11:59:59','OAXBTC','4h','0.000025450000000','0.000025520000000','0.031343271059093','0.031429480449039','1231.562713520349','1231.562713520349007','test','test','0.0'),('2018-09-01 15:59:59','2018-09-02 11:59:59','OAXBTC','4h','0.000025540000000','0.000025000000000','0.031362428701303','0.030699323317642','1227.9729327056814','1227.972932705681387','test','test','2.11'),('2018-09-03 15:59:59','2018-09-05 11:59:59','OAXBTC','4h','0.000026500000000','0.000022990000000','0.031215071949378','0.027080547325140','1177.9272433727715','1177.927243372771500','test','test','13.2'),('2018-09-15 15:59:59','2018-09-16 07:59:59','OAXBTC','4h','0.000023710000000','0.000022190000000','0.030296288699548','0.028354055092491','1277.7852678004122','1277.785267800412157','test','test','6.41'),('2018-09-16 11:59:59','2018-09-16 19:59:59','OAXBTC','4h','0.000022740000000','0.000022750000000','0.029864681231313','0.029877814336516','1313.3105202864067','1313.310520286406700','test','test','0.0'),('2018-09-16 23:59:59','2018-09-18 03:59:59','OAXBTC','4h','0.000023730000000','0.000022860000000','0.029867599699136','0.028772580241140','1258.6430551679634','1258.643055167963439','test','test','3.66'),('2018-09-18 07:59:59','2018-09-18 11:59:59','OAXBTC','4h','0.000022970000000','0.000022660000000','0.029624262041803','0.029224457025131','1289.6936021681904','1289.693602168190409','test','test','1.34'),('2018-09-18 15:59:59','2018-09-24 19:59:59','OAXBTC','4h','0.000023580000000','0.000025950000000','0.029535416482543','0.032503988877099','1252.562191795712','1252.562191795711897','test','test','0.0'),('2018-09-25 15:59:59','2018-09-25 19:59:59','OAXBTC','4h','0.000026960000000','0.000025550000000','0.030195099236889','0.028615904506770','1119.9962624958703','1119.996262495870269','test','test','5.22'),('2018-09-25 23:59:59','2018-09-29 07:59:59','OAXBTC','4h','0.000026450000000','0.000028000000000','0.029844167074640','0.031593069114931','1128.3238969618146','1128.323896961814626','test','test','0.0'),('2018-09-29 11:59:59','2018-10-02 15:59:59','OAXBTC','4h','0.000028960000000','0.000028380000000','0.030232811972482','0.029627320572481','1043.9506896575429','1043.950689657542853','test','test','2.79'),('2018-10-02 19:59:59','2018-10-02 23:59:59','OAXBTC','4h','0.000028430000000','0.000028330000000','0.030098258328038','0.029992390377535','1058.6795050312264','1058.679505031226427','test','test','0.35'),('2018-10-04 03:59:59','2018-10-04 07:59:59','OAXBTC','4h','0.000028720000000','0.000028490000000','0.030074732116815','0.029833882938999','1047.170338329209','1047.170338329209017','test','test','0.80'),('2018-10-04 11:59:59','2018-10-04 23:59:59','OAXBTC','4h','0.000028760000000','0.000029470000000','0.030021210077300','0.030762345652922','1043.8529234109951','1043.852923410995118','test','test','0.79'),('2018-10-05 03:59:59','2018-10-14 23:59:59','OAXBTC','4h','0.000028800000000','0.000035900000000','0.030185906871883','0.037627571413215','1048.1217663848224','1048.121766384822422','test','test','0.0'),('2018-10-15 03:59:59','2018-10-15 07:59:59','OAXBTC','4h','0.000036280000000','0.000034390000000','0.031839610103290','0.030180931407170','877.6077757246417','877.607775724641670','test','test','5.20'),('2018-10-16 07:59:59','2018-10-16 11:59:59','OAXBTC','4h','0.000036500000000','0.000035450000000','0.031471014837486','0.030565684273668','862.2195845886453','862.219584588645262','test','test','2.87'),('2018-10-16 15:59:59','2018-10-16 19:59:59','OAXBTC','4h','0.000037290000000','0.000035910000000','0.031269830267748','0.030112620137164','838.5580656408749','838.558065640874929','test','test','3.70'),('2018-10-16 23:59:59','2018-10-27 15:59:59','OAXBTC','4h','0.000036240000000','0.000039450000000','0.031012672460952','0.033759655866020','855.7580701145635','855.758070114563452','test','test','0.0'),('2018-10-28 07:59:59','2018-10-28 15:59:59','OAXBTC','4h','0.000040410000000','0.000041160000000','0.031623113217634','0.032210030686410','782.5566250342379','782.556625034237868','test','test','0.0'),('2018-10-28 19:59:59','2018-10-30 03:59:59','OAXBTC','4h','0.000042660000000','0.000041070000000','0.031753539321806','0.030570038911078','744.3398809612283','744.339880961228346','test','test','3.72'),('2018-10-30 07:59:59','2018-10-30 11:59:59','OAXBTC','4h','0.000042040000000','0.000043410000000','0.031490539230533','0.032516753282527','749.0613518204832','749.061351820483196','test','test','0.0'),('2018-10-30 15:59:59','2018-10-31 15:59:59','OAXBTC','4h','0.000042030000000','0.000041640000000','0.031718586797643','0.031424267291312','754.6654008480343','754.665400848034324','test','test','0.92'),('2018-10-31 19:59:59','2018-11-01 03:59:59','OAXBTC','4h','0.000042200000000','0.000041360000000','0.031653182462903','0.031023119115300','750.0754138128592','750.075413812859210','test','test','1.99'),('2018-11-01 07:59:59','2018-11-01 11:59:59','OAXBTC','4h','0.000041280000000','0.000041190000000','0.031513168385658','0.031444462349933','763.4003969393787','763.400396939378652','test','test','0.21'),('2018-11-01 15:59:59','2018-11-01 19:59:59','OAXBTC','4h','0.000041500000000','0.000041060000000','0.031497900377719','0.031163946735160','758.9855512703293','758.985551270329324','test','test','1.06'),('2018-11-02 03:59:59','2018-11-02 11:59:59','OAXBTC','4h','0.000041800000000','0.000041510000000','0.031423688457150','0.031205677221442','751.7628817499999','751.762881749999906','test','test','0.83'),('2018-11-02 15:59:59','2018-11-02 19:59:59','OAXBTC','4h','0.000041280000000','0.000040880000000','0.031375241515882','0.031071217857782','760.0591452490686','760.059145249068592','test','test','0.96'),('2018-11-06 15:59:59','2018-11-13 11:59:59','OAXBTC','4h','0.000040860000000','0.000044180000000','0.031307680702970','0.033851525537377','766.2183236165063','766.218323616506268','test','test','0.0'),('2018-11-29 11:59:59','2018-11-29 15:59:59','OAXBTC','4h','0.000029770000000','0.000027720000000','0.031872979555061','0.029678165712674','1070.6408987255925','1070.640898725592479','test','test','6.88'),('2018-12-17 11:59:59','2018-12-18 19:59:59','OAXBTC','4h','0.000026080000000','0.000024450000000','0.031385243145642','0.029423665449039','1203.4218997561943','1203.421899756194307','test','test','6.24'),('2018-12-18 23:59:59','2018-12-19 23:59:59','OAXBTC','4h','0.000024390000000','0.000024890000000','0.030949336990841','0.031583804743831','1268.9355059795362','1268.935505979536174','test','test','0.0'),('2018-12-21 07:59:59','2018-12-21 11:59:59','OAXBTC','4h','0.000024460000000','0.000024060000000','0.031090329824839','0.030581902517810','1271.0682675731261','1271.068267573126150','test','test','1.63'),('2018-12-22 03:59:59','2018-12-22 11:59:59','OAXBTC','4h','0.000024700000000','0.000024290000000','0.030977345978832','0.030463147118455','1254.143561896041','1254.143561896041092','test','test','1.65'),('2018-12-22 15:59:59','2018-12-22 19:59:59','OAXBTC','4h','0.000024270000000','0.000024310000000','0.030863079565415','0.030913945786372','1271.65552391492','1271.655523914919968','test','test','0.0'),('2018-12-22 23:59:59','2018-12-23 03:59:59','OAXBTC','4h','0.000024270000000','0.000024590000000','0.030874383170072','0.031281461975775','1272.1212678233298','1272.121267823329845','test','test','0.0'),('2018-12-23 07:59:59','2018-12-23 11:59:59','OAXBTC','4h','0.000024450000000','0.000024220000000','0.030964845126895','0.030673560285211','1266.4558334108428','1266.455833410842843','test','test','0.94'),('2018-12-23 15:59:59','2018-12-23 19:59:59','OAXBTC','4h','0.000024220000000','0.000024090000000','0.030900115162076','0.030734259878382','1275.80987456963','1275.809874569629983','test','test','0.53'),('2018-12-24 03:59:59','2018-12-24 07:59:59','OAXBTC','4h','0.000024230000000','0.000024780000000','0.030863258432367','0.031563827649775','1273.762213469528','1273.762213469527978','test','test','0.0'),('2018-12-24 11:59:59','2018-12-25 03:59:59','OAXBTC','4h','0.000024660000000','0.000024280000000','0.031018940480680','0.030540951941237','1257.8645774809224','1257.864577480922435','test','test','1.54'),('2018-12-25 07:59:59','2018-12-25 11:59:59','OAXBTC','4h','0.000024270000000','0.000024320000000','0.030912720805248','0.030976405850170','1273.7008984444897','1273.700898444489667','test','test','0.0'),('2018-12-26 15:59:59','2018-12-26 19:59:59','OAXBTC','4h','0.000024480000000','0.000024340000000','0.030926873037453','0.030750003665507','1263.352656758687','1263.352656758687090','test','test','0.57'),('2018-12-26 23:59:59','2018-12-27 03:59:59','OAXBTC','4h','0.000024620000000','0.000023880000000','0.030887568732576','0.029959185269452','1254.572247464491','1254.572247464491056','test','test','3.00'),('2019-01-02 07:59:59','2019-01-07 11:59:59','OAXBTC','4h','0.000023730000000','0.000024190000000','0.030681261296326','0.031276009724321','1292.931365205478','1292.931365205477960','test','test','0.0'),('2019-01-07 15:59:59','2019-01-07 19:59:59','OAXBTC','4h','0.000024190000000','0.000024320000000','0.030813427613658','0.030979022718651','1273.8084999445314','1273.808499944531377','test','test','0.0'),('2019-01-07 23:59:59','2019-01-08 03:59:59','OAXBTC','4h','0.000024250000000','0.000023610000000','0.030850226525879','0.030036034980454','1272.1742897269642','1272.174289726964162','test','test','2.63'),('2019-01-14 19:59:59','2019-01-27 11:59:59','OAXBTC','4h','0.000023820000000','0.000039560000000','0.030669295071340','0.050935235643250','1287.5438736918554','1287.543873691855424','test','test','0.0'),('2019-01-27 23:59:59','2019-01-28 03:59:59','OAXBTC','4h','0.000042060000000','0.000038850000000','0.035172837420653','0.032488462524783','836.2538616417813','836.253861641781327','test','test','7.63'),('2019-02-02 11:59:59','2019-02-02 15:59:59','OAXBTC','4h','0.000040000000000','0.000038910000000','0.034576309666016','0.033634105227617','864.4077416503886','864.407741650388630','test','test','2.72'),('2019-02-10 23:59:59','2019-02-11 03:59:59','OAXBTC','4h','0.000036180000000','0.000035420000000','0.034366930901927','0.033645016377730','949.8875318387749','949.887531838774862','test','test','2.10'),('2019-02-11 11:59:59','2019-02-11 15:59:59','OAXBTC','4h','0.000035930000000','0.000037480000000','0.034206505452105','0.035682154866265','952.0318801031262','952.031880103126241','test','test','0.0'),('2019-02-11 19:59:59','2019-02-12 03:59:59','OAXBTC','4h','0.000036460000000','0.000035190000000','0.034534427544141','0.033331500419043','947.1867126752846','947.186712675284639','test','test','3.48'),('2019-02-12 19:59:59','2019-02-12 23:59:59','OAXBTC','4h','0.000037340000000','0.000035840000000','0.034267110405230','0.032890552676043','917.7051527913823','917.705152791382261','test','test','4.01'),('2019-02-13 03:59:59','2019-02-13 07:59:59','OAXBTC','4h','0.000035550000000','0.000035290000000','0.033961208687633','0.033712828539707','955.3082612555023','955.308261255502316','test','test','0.73'),('2019-02-13 11:59:59','2019-02-13 15:59:59','OAXBTC','4h','0.000036000000000','0.000036040000000','0.033906013099205','0.033943686447093','941.8336972001417','941.833697200141728','test','test','0.0'),('2019-02-13 19:59:59','2019-02-14 15:59:59','OAXBTC','4h','0.000036150000000','0.000035880000000','0.033914384954291','0.033661082494051','938.1572601463714','938.157260146371414','test','test','0.74'),('2019-02-14 19:59:59','2019-02-15 15:59:59','OAXBTC','4h','0.000036480000000','0.000036110000000','0.033858095518682','0.033514688299880','928.1276183849353','928.127618384935317','test','test','1.01'),('2019-02-15 19:59:59','2019-02-15 23:59:59','OAXBTC','4h','0.000036000000000','0.000035980000000','0.033781782803393','0.033763015146280','938.3828556498084','938.382855649808448','test','test','0.05'),('2019-02-25 15:59:59','2019-02-25 19:59:59','OAXBTC','4h','0.000033860000000','0.000033120000000','0.033777612212924','0.033039412772949','997.5668107774231','997.566810777423143','test','test','2.18'),('2019-02-26 11:59:59','2019-02-26 15:59:59','OAXBTC','4h','0.000034520000000','0.000033580000000','0.033613567892929','0.032698250574871','973.7418277210054','973.741827721005393','test','test','2.72'),('2019-02-26 19:59:59','2019-02-26 23:59:59','OAXBTC','4h','0.000033910000000','0.000033450000000','0.033410164044472','0.032956944479139','985.2599246379173','985.259924637917265','test','test','1.35'),('2019-03-01 19:59:59','2019-03-01 23:59:59','OAXBTC','4h','0.000033160000000','0.000033270000000','0.033309448585509','0.033419944343784','1004.5068934110037','1004.506893411003716','test','test','0.0'),('2019-03-02 23:59:59','2019-03-04 03:59:59','OAXBTC','4h','0.000033720000000','0.000033010000000','0.033334003198459','0.032632130651872','988.5528825165742','988.552882516574186','test','test','2.10'),('2019-03-05 19:59:59','2019-03-06 15:59:59','OAXBTC','4h','0.000033280000000','0.000033750000000','0.033178031521440','0.033646591461797','996.9360433124864','996.936043312486390','test','test','0.0'),('2019-03-06 19:59:59','2019-03-11 11:59:59','OAXBTC','4h','0.000033860000000','0.000033840000000','0.033282155952630','0.033262497266302','982.9343163800945','982.934316380094515','test','test','1.18'),('2019-03-12 11:59:59','2019-03-18 07:59:59','OAXBTC','4h','0.000035100000000','0.000037600000000','0.033277787355668','0.035648000130288','948.0851098480974','948.085109848097431','test','test','0.0'),('2019-03-18 11:59:59','2019-03-21 15:59:59','OAXBTC','4h','0.000040500000000','0.000036000000000','0.033804501305584','0.030048445604964','834.6790445823153','834.679044582315328','test','test','11.1'),('2019-03-26 11:59:59','2019-03-26 15:59:59','OAXBTC','4h','0.000038230000000','0.000088340000000','0.032969822261002','0.076185040505805','862.4070693434882','862.407069343488160','test','test','0.0'),('2019-03-26 19:59:59','2019-03-27 15:59:59','OAXBTC','4h','0.000091990000000','0.000068150000000','0.042573204093180','0.031539991944235','462.8025230261984','462.802523026198401','test','test','25.9'),('2019-03-27 19:59:59','2019-03-31 15:59:59','OAXBTC','4h','0.000068490000000','0.000054120000000','0.040121379171192','0.031703446353408','585.7990826572086','585.799082657208601','test','test','20.9'),('2019-03-31 19:59:59','2019-04-02 03:59:59','OAXBTC','4h','0.000054390000000','0.000053860000000','0.038250727433907','0.037877995579890','703.2676490881942','703.267649088194162','test','test','0.97');
+/*!40000 ALTER TABLE `trades` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Final view structure for view `daily_profit`
+--
+
+/*!50001 DROP TABLE IF EXISTS `daily_profit`*/;
+/*!50001 DROP VIEW IF EXISTS `daily_profit`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `daily_profit` AS select left(`profit`.`sell_time`,10) AS `date`,`profit`.`interval` AS `interval`,sum(`profit`.`base_profit`) AS `profit`,sum(`profit`.`perc`) AS `perc` from `profit` where (`profit`.`perc` is not null) group by left(`profit`.`sell_time`,10) order by left(`profit`.`sell_time`,10),sum(`profit`.`base_profit`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `hour_balance`
+--
+
+/*!50001 DROP TABLE IF EXISTS `hour_balance`*/;
+/*!50001 DROP VIEW IF EXISTS `hour_balance`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `hour_balance` AS select `tt1`.`exchange_id` AS `exchange_id`,`tt1`.`usd` AS `usd1`,`tt1`.`coin` AS `coin`,`tt1`.`ctime` AS `ctime1`,`tt2`.`ctime` AS `ctime2`,`tt2`.`usd` AS `usd2`,(`tt1`.`usd` - `tt2`.`usd`) AS `USD_diff`,(`tt1`.`gbp` - `tt2`.`gbp`) AS `GBP_diff`,(`tt1`.`count` - `tt2`.`count`) AS `COUNT_diff`,(((`tt1`.`btc` - `tt2`.`btc`) / `tt1`.`btc`) * 100) AS `perc_change`,(`tt1`.`btc` - `tt2`.`btc`) AS `BTC_diff` from (`balance` `tt1` left join `balance` `tt2` on(((`tt1`.`coin` = `tt2`.`coin`) and (`tt1`.`exchange_id` = `tt2`.`exchange_id`)))) where ((`tt1`.`ctime` > (now() - interval 20 minute)) and (`tt2`.`ctime` < (now() - interval 45 minute)) and (`tt2`.`ctime` > (now() - interval 90 minute))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `monthly_profit`
+--
+
+/*!50001 DROP TABLE IF EXISTS `monthly_profit`*/;
+/*!50001 DROP VIEW IF EXISTS `monthly_profit`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `monthly_profit` AS select left(`profit`.`sell_time`,7) AS `date`,`profit`.`interval` AS `interval`,sum(`profit`.`base_profit`) AS `profit`,sum(`profit`.`perc`) AS `perc` from `profit` where (`profit`.`perc` is not null) group by left(`profit`.`sell_time`,7) order by left(`profit`.`sell_time`,7),sum(`profit`.`base_profit`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `profit`
+--
+
+/*!50001 DROP TABLE IF EXISTS `profit`*/;
+/*!50001 DROP VIEW IF EXISTS `profit`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `profit` AS select `trades`.`buy_time` AS `buy_time`,`trades`.`interval` AS `interval`,`trades`.`sell_time` AS `sell_time`,`trades`.`pair` AS `pair`,`trades`.`buy_price` AS `buy_price`,`trades`.`sell_price` AS `sell_price`,(((`trades`.`sell_price` - `trades`.`buy_price`) / `trades`.`buy_price`) * 100) AS `perc`,(`trades`.`base_out` - `trades`.`base_in`) AS `base_profit`,`trades`.`drawdown_perc` AS `drawdown_perc` from `trades` order by (((`trades`.`sell_price` - `trades`.`buy_price`) / `trades`.`buy_price`) * 100) desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `profitable`
+--
+
+/*!50001 DROP TABLE IF EXISTS `profitable`*/;
+/*!50001 DROP VIEW IF EXISTS `profitable`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `profitable` AS select `profit`.`pair` AS `pair`,count(0) AS `total`,sum((case when (`profit`.`perc` > 0) then 1 else 0 end)) AS `profit`,sum((case when (`profit`.`perc` < 0) then 1 else 0 end)) AS `loss`,((sum((case when (`profit`.`perc` > 0) then 1 else 0 end)) / count(0)) * 100) AS `perc_profitable` from `profit` group by `profit`.`pair` order by ((sum((case when (`profit`.`perc` > 0) then 1 else 0 end)) / count(0)) * 100) desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2020-04-30 18:47:14
