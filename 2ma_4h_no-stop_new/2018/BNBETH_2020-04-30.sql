@@ -1,0 +1,393 @@
+-- MySQL dump 10.16  Distrib 10.1.44-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: greencandle
+-- ------------------------------------------------------
+-- Server version	10.1.24-MariaDB-1~jessie
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `balance`
+--
+
+DROP TABLE IF EXISTS `balance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `balance` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ctime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `exchange_id` int(11) unsigned NOT NULL,
+  `gbp` varchar(30) DEFAULT NULL,
+  `btc` varchar(30) DEFAULT NULL,
+  `usd` varchar(30) DEFAULT NULL,
+  `count` varchar(30) DEFAULT NULL,
+  `coin` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `exchange_id` (`exchange_id`),
+  CONSTRAINT `balance_ibfk_2` FOREIGN KEY (`exchange_id`) REFERENCES `exchange` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `balance`
+--
+
+LOCK TABLES `balance` WRITE;
+/*!40000 ALTER TABLE `balance` DISABLE KEYS */;
+/*!40000 ALTER TABLE `balance` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `coin`
+--
+
+DROP TABLE IF EXISTS `coin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `coin` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `symbol` varchar(10) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `coin`
+--
+
+LOCK TABLES `coin` WRITE;
+/*!40000 ALTER TABLE `coin` DISABLE KEYS */;
+/*!40000 ALTER TABLE `coin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `daily_profit`
+--
+
+DROP TABLE IF EXISTS `daily_profit`;
+/*!50001 DROP VIEW IF EXISTS `daily_profit`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `daily_profit` (
+  `date` tinyint NOT NULL,
+  `interval` tinyint NOT NULL,
+  `profit` tinyint NOT NULL,
+  `perc` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `exchange`
+--
+
+DROP TABLE IF EXISTS `exchange`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `exchange` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `exchange`
+--
+
+LOCK TABLES `exchange` WRITE;
+/*!40000 ALTER TABLE `exchange` DISABLE KEYS */;
+INSERT INTO `exchange` VALUES (3,'coinbase'),(4,'binance'),(5,'margin');
+/*!40000 ALTER TABLE `exchange` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `hour_balance`
+--
+
+DROP TABLE IF EXISTS `hour_balance`;
+/*!50001 DROP VIEW IF EXISTS `hour_balance`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `hour_balance` (
+  `exchange_id` tinyint NOT NULL,
+  `usd1` tinyint NOT NULL,
+  `coin` tinyint NOT NULL,
+  `ctime1` tinyint NOT NULL,
+  `ctime2` tinyint NOT NULL,
+  `usd2` tinyint NOT NULL,
+  `USD_diff` tinyint NOT NULL,
+  `GBP_diff` tinyint NOT NULL,
+  `COUNT_diff` tinyint NOT NULL,
+  `perc_change` tinyint NOT NULL,
+  `BTC_diff` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `monthly_profit`
+--
+
+DROP TABLE IF EXISTS `monthly_profit`;
+/*!50001 DROP VIEW IF EXISTS `monthly_profit`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `monthly_profit` (
+  `date` tinyint NOT NULL,
+  `interval` tinyint NOT NULL,
+  `profit` tinyint NOT NULL,
+  `perc` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `open_trades`
+--
+
+DROP TABLE IF EXISTS `open_trades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `open_trades` (
+  `pair` varchar(30) DEFAULT NULL,
+  `buy_price` varchar(30) DEFAULT NULL,
+  `buy_time` varchar(30) DEFAULT NULL,
+  `current_price` varchar(30) DEFAULT NULL,
+  `perc` varchar(30) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `open_trades`
+--
+
+LOCK TABLES `open_trades` WRITE;
+/*!40000 ALTER TABLE `open_trades` DISABLE KEYS */;
+/*!40000 ALTER TABLE `open_trades` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `profit`
+--
+
+DROP TABLE IF EXISTS `profit`;
+/*!50001 DROP VIEW IF EXISTS `profit`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `profit` (
+  `buy_time` tinyint NOT NULL,
+  `interval` tinyint NOT NULL,
+  `sell_time` tinyint NOT NULL,
+  `pair` tinyint NOT NULL,
+  `buy_price` tinyint NOT NULL,
+  `sell_price` tinyint NOT NULL,
+  `perc` tinyint NOT NULL,
+  `base_profit` tinyint NOT NULL,
+  `drawdown_perc` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `profitable`
+--
+
+DROP TABLE IF EXISTS `profitable`;
+/*!50001 DROP VIEW IF EXISTS `profitable`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `profitable` (
+  `pair` tinyint NOT NULL,
+  `total` tinyint NOT NULL,
+  `profit` tinyint NOT NULL,
+  `loss` tinyint NOT NULL,
+  `perc_profitable` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `symbols`
+--
+
+DROP TABLE IF EXISTS `symbols`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `symbols` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `symbol` varchar(10) DEFAULT NULL,
+  `category` varchar(20) DEFAULT NULL,
+  `maximum_leverage` int(11) DEFAULT NULL,
+  `maximum_amount` int(11) DEFAULT NULL,
+  `overnight_charge_long_percent` float DEFAULT NULL,
+  `overnight_charge_short_percent` float DEFAULT NULL,
+  `decimals` int(11) DEFAULT NULL,
+  `timezone` varchar(80) DEFAULT NULL,
+  `timezone_offset` varchar(10) DEFAULT NULL,
+  `open_day` varchar(80) DEFAULT NULL,
+  `open_time` time DEFAULT NULL,
+  `close_day` varchar(80) DEFAULT NULL,
+  `close_time` time DEFAULT NULL,
+  `daily_break_start` time DEFAULT NULL,
+  `daily_break_stop` time DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `symbol` (`symbol`),
+  KEY `category` (`category`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `symbols`
+--
+
+LOCK TABLES `symbols` WRITE;
+/*!40000 ALTER TABLE `symbols` DISABLE KEYS */;
+/*!40000 ALTER TABLE `symbols` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `trades`
+--
+
+DROP TABLE IF EXISTS `trades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trades` (
+  `buy_time` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `sell_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `pair` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `interval` varchar(3) DEFAULT NULL,
+  `buy_price` varchar(60) DEFAULT NULL,
+  `sell_price` varchar(30) DEFAULT NULL,
+  `base_in` varchar(30) DEFAULT NULL,
+  `base_out` varchar(30) DEFAULT NULL,
+  `quote_in` varchar(30) DEFAULT NULL,
+  `quote_out` varchar(30) DEFAULT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `closed_by` varchar(10) DEFAULT NULL,
+  `drawdown_perc` varchar(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `trades`
+--
+
+LOCK TABLES `trades` WRITE;
+/*!40000 ALTER TABLE `trades` DISABLE KEYS */;
+INSERT INTO `trades` VALUES ('2018-02-07 11:59:59','2018-02-07 15:59:59','BNBETH','4h','0.010749000000000','0.010740000000000','1.297777777777778','1.296691165069619','120.73474535098872','120.734745350988717','test','test','0.08'),('2018-02-07 23:59:59','2018-02-08 03:59:59','BNBETH','4h','0.010684000000000','0.010596000000000','1.297536308287076','1.286849000618669','121.44667805008196','121.446678050081957','test','test','0.82'),('2018-02-09 11:59:59','2018-02-09 15:59:59','BNBETH','4h','0.010619000000000','0.011279000000000','1.295161351027430','1.375659184314755','121.96641407170448','121.966414071704477','test','test','0.0'),('2018-02-09 19:59:59','2018-02-11 03:59:59','BNBETH','4h','0.011335000000000','0.010693000000000','1.313049758424613','1.238680288207709','115.84029628801174','115.840296288011743','test','test','5.66'),('2018-02-11 15:59:59','2018-02-11 19:59:59','BNBETH','4h','0.010880000000000','0.010679000000000','1.296523209487523','1.272570896518130','119.16573616613266','119.165736166132660','test','test','1.84'),('2018-02-11 23:59:59','2018-02-12 03:59:59','BNBETH','4h','0.010733000000000','0.010821000000000','1.291200473272103','1.301787041952616','120.30191682401032','120.301916824010320','test','test','0.0'),('2018-02-12 07:59:59','2018-02-12 11:59:59','BNBETH','4h','0.010731000000000','0.010770000000000','1.293553044089994','1.298254243299714','120.54356948001066','120.543569480010660','test','test','0.0'),('2018-02-12 15:59:59','2018-02-12 19:59:59','BNBETH','4h','0.010787000000000','0.010697000000000','1.294597755025488','1.283796438815949','120.01462455042994','120.014624550429943','test','test','0.83'),('2018-02-12 23:59:59','2018-02-13 03:59:59','BNBETH','4h','0.010780000000000','0.010723000000000','1.292197462534479','1.285364878548907','119.86989448371793','119.869894483717928','test','test','0.52'),('2018-02-13 07:59:59','2018-02-13 11:59:59','BNBETH','4h','0.010766000000000','0.010654000000000','1.290679110537685','1.277252019660830','119.8847399719195','119.884739971919501','test','test','1.04'),('2018-02-13 15:59:59','2018-02-13 19:59:59','BNBETH','4h','0.010771000000000','0.010682000000000','1.287695312565051','1.277055178611074','119.55206689862139','119.552066898621391','test','test','0.82'),('2018-02-14 15:59:59','2018-02-20 07:59:59','BNBETH','4h','0.010883000000000','0.011438000000000','1.285330838353056','1.350878813661881','118.1044600159015','118.104460015901495','test','test','0.0'),('2018-02-20 11:59:59','2018-02-20 19:59:59','BNBETH','4h','0.011439000000000','0.011584000000000','1.299897055088351','1.316374463339755','113.63729828554513','113.637298285545128','test','test','0.42'),('2018-02-23 23:59:59','2018-02-24 03:59:59','BNBETH','4h','0.011455000000000','0.011230000000000','1.303558701366440','1.277954100073778','113.79822796738891','113.798227967388911','test','test','1.96'),('2018-02-26 15:59:59','2018-02-26 19:59:59','BNBETH','4h','0.011426000000000','0.011364000000000','1.297868789968071','1.290826267214875','113.58907666445569','113.589076664455689','test','test','0.54'),('2018-02-26 23:59:59','2018-03-06 07:59:59','BNBETH','4h','0.011438000000000','0.011729000000000','1.296303784911805','1.329283711595608','113.33308138763815','113.333081387638146','test','test','0.0'),('2018-03-07 07:59:59','2018-03-07 19:59:59','BNBETH','4h','0.011924000000000','0.011885000000000','1.303632657508206','1.299368847239603','109.32846842571333','109.328468425713325','test','test','0.32'),('2018-03-07 23:59:59','2018-03-08 03:59:59','BNBETH','4h','0.012088000000000','0.011250000000000','1.302685144115183','1.212376561159481','107.76680543639833','107.766805436398329','test','test','6.93'),('2018-03-08 23:59:59','2018-03-09 03:59:59','BNBETH','4h','0.011859000000000','0.011402000000000','1.282616570125027','1.233189487525555','108.15554179315514','108.155541793155137','test','test','3.85'),('2018-03-13 07:59:59','2018-03-13 11:59:59','BNBETH','4h','0.011558000000000','0.011523000000000','1.271632773991811','1.267782008540201','110.02187004601234','110.021870046012339','test','test','0.30'),('2018-03-13 15:59:59','2018-04-07 19:59:59','BNBETH','4h','0.014000000000000','0.031920000000000','1.270777048335897','2.897371670205845','90.7697891668498','90.769789166849804','test','test','0.0'),('2018-04-07 23:59:59','2018-04-09 03:59:59','BNBETH','4h','0.032456000000000','0.029676000000000','1.632242519862553','1.492433726258354','50.29093295115087','50.290932951150872','test','test','8.56'),('2018-04-10 03:59:59','2018-04-10 15:59:59','BNBETH','4h','0.030897000000000','0.029675000000000','1.601173899061619','1.537846245740802','51.822956891012694','51.822956891012694','test','test','3.95'),('2018-05-09 23:59:59','2018-05-10 03:59:59','BNBETH','4h','0.019473000000000','0.019184000000000','1.587101087212549','1.563546821603530','81.50264916615565','81.502649166155649','test','test','1.48'),('2018-05-17 23:59:59','2018-05-18 03:59:59','BNBETH','4h','0.018527000000000','0.018341000000000','1.581866805966101','1.565985809263467','85.38170270233176','85.381702702331765','test','test','1.00'),('2018-05-18 07:59:59','2018-05-20 19:59:59','BNBETH','4h','0.018627000000000','0.019585000000000','1.578337695587737','1.659512737858261','84.73386458301052','84.733864583010515','test','test','0.0'),('2018-05-20 23:59:59','2018-06-19 15:59:59','BNBETH','4h','0.019721000000000','0.030597000000000','1.596376593870076','2.476767640720182','80.94805506161332','80.948055061613317','test','test','0.0'),('2018-06-19 19:59:59','2018-06-20 07:59:59','BNBETH','4h','0.030637000000000','0.030515000000000','1.792019048725655','1.784883026140398','58.4919884037489','58.491988403748898','test','test','0.39'),('2018-06-20 11:59:59','2018-06-20 15:59:59','BNBETH','4h','0.030512000000000','0.029780000000000','1.790433265928931','1.747479767283808','58.67964295781762','58.679642957817620','test','test','2.39'),('2018-06-21 03:59:59','2018-06-21 07:59:59','BNBETH','4h','0.030370000000000','0.030406000000000','1.780888044007792','1.782999073628611','58.63971168942352','58.639711689423521','test','test','0.0'),('2018-06-21 15:59:59','2018-06-24 07:59:59','BNBETH','4h','0.031393000000000','0.032042000000000','1.781357161701308','1.818183868226462','56.74376968436621','56.743769684366207','test','test','0.0'),('2018-06-24 11:59:59','2018-06-24 15:59:59','BNBETH','4h','0.031869000000000','0.031994000000000','1.789540874262453','1.796560002860238','56.153028782279115','56.153028782279115','test','test','0.0'),('2018-06-24 19:59:59','2018-06-25 03:59:59','BNBETH','4h','0.032190000000000','0.031130000000000','1.791100680617516','1.732120664418244','55.641524716294384','55.641524716294384','test','test','3.29'),('2018-06-25 07:59:59','2018-06-25 15:59:59','BNBETH','4h','0.032496000000000','0.031964000000000','1.777994010351012','1.748886033569047','54.714242071363','54.714242071363003','test','test','1.63'),('2018-06-25 19:59:59','2018-06-30 03:59:59','BNBETH','4h','0.032437000000000','0.032837000000000','1.771525571066131','1.793371309834403','54.61434692068103','54.614346920681029','test','test','1.79'),('2018-06-30 07:59:59','2018-06-30 11:59:59','BNBETH','4h','0.032282000000000','0.032621000000000','1.776380179681302','1.795034317619223','55.02695556908811','55.026955569088109','test','test','0.0'),('2018-06-30 15:59:59','2018-06-30 19:59:59','BNBETH','4h','0.032377000000000','0.032570000000000','1.780525543667507','1.791139295093761','54.99353070597976','54.993530705979758','test','test','0.0'),('2018-06-30 23:59:59','2018-07-01 03:59:59','BNBETH','4h','0.032392000000000','0.032097000000000','1.782884155095563','1.766647095767544','55.040879078030486','55.040879078030486','test','test','0.91'),('2018-07-25 11:59:59','2018-07-25 23:59:59','BNBETH','4h','0.027613000000000','0.027520000000000','1.779275919689337','1.773283356022546','64.43616846012156','64.436168460121564','test','test','1.45'),('2018-07-26 03:59:59','2018-07-26 07:59:59','BNBETH','4h','0.027431000000000','0.027371000000000','1.777944238874494','1.774055330182413','64.81514486801409','64.815144868014087','test','test','0.21'),('2018-07-26 11:59:59','2018-08-14 03:59:59','BNBETH','4h','0.027251000000000','0.034927000000000','1.777080036942921','2.277643919500400','65.21155322530993','65.211553225309927','test','test','0.0'),('2018-08-14 19:59:59','2018-08-14 23:59:59','BNBETH','4h','0.035204000000000','0.033811000000000','1.888316455289027','1.813596968235919','53.639258473157234','53.639258473157234','test','test','3.95'),('2018-08-15 03:59:59','2018-08-15 07:59:59','BNBETH','4h','0.035546000000000','0.035527000000000','1.871712124832781','1.870711659791094','52.65605482565637','52.656054825656369','test','test','0.05'),('2018-08-15 11:59:59','2018-08-15 15:59:59','BNBETH','4h','0.035109000000000','0.034219000000000','1.871489799267962','1.824048233818975','53.305129717962956','53.305129717962956','test','test','2.53'),('2018-08-20 19:59:59','2018-08-20 23:59:59','BNBETH','4h','0.034252000000000','0.035610000000000','1.860947229168186','1.934728799214034','54.331053052907464','54.331053052907464','test','test','0.0'),('2018-08-21 03:59:59','2018-08-21 15:59:59','BNBETH','4h','0.034778000000000','0.034482000000000','1.877343133622819','1.861364826429986','53.98076754335555','53.980767543355547','test','test','0.85'),('2018-08-21 19:59:59','2018-08-21 23:59:59','BNBETH','4h','0.034539000000000','0.034620000000000','1.873792398691079','1.878186769816299','54.251495373087785','54.251495373087785','test','test','0.0'),('2018-08-22 03:59:59','2018-09-13 19:59:59','BNBETH','4h','0.034990000000000','0.046713000000000','1.874768925607795','2.502888848868732','53.58013505595297','53.580135055952972','test','test','0.50'),('2018-09-13 23:59:59','2018-09-14 03:59:59','BNBETH','4h','0.045470000000000','0.044485000000000','2.014351130776892','1.970714978064879','44.300662651790006','44.300662651790006','test','test','2.16'),('2018-09-14 11:59:59','2018-09-14 19:59:59','BNBETH','4h','0.046659000000000','0.045792000000000','2.004654207952000','1.967404476961315','42.963934245311734','42.963934245311734','test','test','1.85'),('2018-09-14 23:59:59','2018-09-15 15:59:59','BNBETH','4h','0.047351000000000','0.045010000000000','1.996376489954070','1.897677046162334','42.161231863193386','42.161231863193386','test','test','4.94'),('2018-09-17 19:59:59','2018-09-18 15:59:59','BNBETH','4h','0.047336000000000','0.045383000000000','1.974443280222573','1.892981227529598','41.7112404981953','41.711240498195302','test','test','4.12'),('2018-09-20 07:59:59','2018-09-20 11:59:59','BNBETH','4h','0.046230000000000','0.045894000000000','1.956340601846356','1.942121903117817','42.31755573970055','42.317555739700552','test','test','0.72'),('2018-09-20 19:59:59','2018-09-20 23:59:59','BNBETH','4h','0.046300000000000','0.044697000000000','1.953180891017792','1.885557803149508','42.185332419390754','42.185332419390754','test','test','3.46'),('2018-09-25 07:59:59','2018-09-25 23:59:59','BNBETH','4h','0.045787000000000','0.044830000000000','1.938153538158174','1.897643940761154','42.329777844326415','42.329777844326415','test','test','2.09'),('2018-09-26 03:59:59','2018-09-26 15:59:59','BNBETH','4h','0.045700000000000','0.044797000000000','1.929151405403280','1.891032724460629','42.21337867403239','42.213378674032391','test','test','1.97'),('2018-09-26 19:59:59','2018-09-26 23:59:59','BNBETH','4h','0.044697000000000','0.045315000000000','1.920680587416024','1.947236745615078','42.97112977193155','42.971129771931551','test','test','0.0'),('2018-09-27 03:59:59','2018-09-27 15:59:59','BNBETH','4h','0.044892000000000','0.045120000000000','1.926581955904703','1.936366788078504','42.91593058684628','42.915930586846279','test','test','0.0'),('2018-09-28 19:59:59','2018-09-29 11:59:59','BNBETH','4h','0.045185000000000','0.042704000000000','1.928756363054436','1.822852976161926','42.685766583035','42.685766583034997','test','test','5.49'),('2018-10-02 23:59:59','2018-10-09 03:59:59','BNBETH','4h','0.045773000000000','0.046164000000000','1.905222277078323','1.921496978547259','41.62327741415951','41.623277414159510','test','test','0.03'),('2018-10-09 07:59:59','2018-10-09 11:59:59','BNBETH','4h','0.045939000000000','0.046130000000000','1.908838877404754','1.916775232692947','41.55159836750372','41.551598367503722','test','test','0.0'),('2018-10-10 07:59:59','2018-10-10 11:59:59','BNBETH','4h','0.045815000000000','0.045722000000000','1.910602511913241','1.906724174390422','41.7025540088015','41.702554008801499','test','test','0.20'),('2018-10-10 15:59:59','2018-10-10 19:59:59','BNBETH','4h','0.045916000000000','0.045873000000000','1.909740659130392','1.907952200894862','41.592051989075536','41.592051989075536','test','test','0.09'),('2018-10-10 23:59:59','2018-10-11 03:59:59','BNBETH','4h','0.045840000000000','0.047947000000000','1.909343223966941','1.997104702433310','41.65233909177446','41.652339091774458','test','test','0.0'),('2018-10-11 07:59:59','2018-10-15 07:59:59','BNBETH','4h','0.047922000000000','0.047632000000000','1.928845774737245','1.917173363847178','40.24969272436971','40.249692724369709','test','test','1.84'),('2018-10-15 11:59:59','2018-10-17 07:59:59','BNBETH','4h','0.047250000000000','0.047571000000000','1.926251905650564','1.939338188438158','40.76723609842463','40.767236098424632','test','test','0.0'),('2018-10-17 11:59:59','2018-10-20 11:59:59','BNBETH','4h','0.047598000000000','0.047631000000000','1.929159968492251','1.930497467524989','40.530273719321215','40.530273719321215','test','test','0.0'),('2018-10-20 15:59:59','2018-10-20 19:59:59','BNBETH','4h','0.047724000000000','0.047598000000000','1.929457190499527','1.924363074205776','40.42949439484382','40.429494394843822','test','test','0.26'),('2018-10-20 23:59:59','2018-10-21 03:59:59','BNBETH','4h','0.047752000000000','0.047521000000000','1.928325164656471','1.918996903787070','40.382081685719356','40.382081685719356','test','test','0.48'),('2018-10-21 11:59:59','2018-10-21 15:59:59','BNBETH','4h','0.047756000000000','0.047545000000000','1.926252217796604','1.917741471126969','40.3352922731511','40.335292273151097','test','test','0.44'),('2018-10-21 19:59:59','2018-10-21 23:59:59','BNBETH','4h','0.047684000000000','0.047843000000000','1.924360940758908','1.930777629576555','40.35653344431901','40.356533444319012','test','test','0.0'),('2018-10-22 03:59:59','2018-10-22 07:59:59','BNBETH','4h','0.047785000000000','0.047777000000000','1.925786871607273','1.925464463006815','40.30107505717847','40.301075057178473','test','test','0.01'),('2018-10-22 15:59:59','2018-10-24 11:59:59','BNBETH','4h','0.047876000000000','0.047965000000000','1.925715225251616','1.929295070164462','40.222976548826466','40.222976548826466','test','test','0.08'),('2018-10-24 15:59:59','2018-10-24 23:59:59','BNBETH','4h','0.048014000000000','0.048150000000000','1.926510746343359','1.931967601875135','40.12393773364767','40.123937733647672','test','test','0.0'),('2018-10-25 03:59:59','2018-10-25 15:59:59','BNBETH','4h','0.048112000000000','0.047888000000000','1.927723380905976','1.918748280363015','40.06741313821866','40.067413138218662','test','test','0.46'),('2018-10-25 19:59:59','2018-10-25 23:59:59','BNBETH','4h','0.047990000000000','0.048142000000000','1.925728914118652','1.931828326390918','40.12771231753806','40.127712317538062','test','test','0.0'),('2018-10-26 03:59:59','2018-10-26 11:59:59','BNBETH','4h','0.048015000000000','0.047777000000000','1.927084339068044','1.917532197597708','40.13504819469007','40.135048194690071','test','test','0.49'),('2018-10-26 15:59:59','2018-10-26 23:59:59','BNBETH','4h','0.047999000000000','0.047919000000000','1.924961640963525','1.921753304721581','40.10420302430311','40.104203024303111','test','test','0.16'),('2018-10-29 19:59:59','2018-10-30 11:59:59','BNBETH','4h','0.047938000000000','0.047815000000000','1.924248677354204','1.919311412818459','40.14036207923158','40.140362079231579','test','test','0.25'),('2018-10-30 15:59:59','2018-10-30 23:59:59','BNBETH','4h','0.047959000000000','0.047824000000000','1.923151507457372','1.917738019821959','40.09990841046251','40.099908410462511','test','test','0.28'),('2018-10-31 03:59:59','2018-10-31 07:59:59','BNBETH','4h','0.047740000000000','0.047852000000000','1.921948510205058','1.926457480316976','40.25866171355379','40.258661713553792','test','test','0.0'),('2018-10-31 11:59:59','2018-10-31 15:59:59','BNBETH','4h','0.047768000000000','0.047613000000000','1.922950503563262','1.916710817412443','40.25603968270101','40.256039682701008','test','test','0.32'),('2018-11-01 11:59:59','2018-11-01 15:59:59','BNBETH','4h','0.047774000000000','0.047897000000000','1.921563906640858','1.926511207694084','40.22195978232632','40.221959782326323','test','test','0.0'),('2018-11-01 19:59:59','2018-11-02 11:59:59','BNBETH','4h','0.048048000000000','0.047836000000000','1.922663306874908','1.914180027215869','40.01547008980411','40.015470089804111','test','test','0.44'),('2018-11-04 03:59:59','2018-11-04 07:59:59','BNBETH','4h','0.047843000000000','0.047609000000000','1.920778133617344','1.911383612302492','40.14752698654649','40.147526986546488','test','test','0.48'),('2018-11-14 15:59:59','2018-11-14 19:59:59','BNBETH','4h','0.046758000000000','0.046472000000000','1.918690462214043','1.906954599427071','41.03448526913134','41.034485269131338','test','test','0.61'),('2018-11-14 23:59:59','2018-11-15 11:59:59','BNBETH','4h','0.046302000000000','0.045924000000000','1.916082492705827','1.900439989525774','41.38228354511311','41.382283545113111','test','test','0.82'),('2018-11-15 15:59:59','2018-11-15 19:59:59','BNBETH','4h','0.045606000000000','0.045019000000000','1.912606380888038','1.887989007174464','41.937604282068975','41.937604282068975','test','test','1.28'),('2018-11-19 07:59:59','2018-11-19 15:59:59','BNBETH','4h','0.045891000000000','0.044316000000000','1.907135853396132','1.841682083177594','41.557949345103225','41.557949345103225','test','test','3.43'),('2018-11-21 23:59:59','2018-11-22 19:59:59','BNBETH','4h','0.045500000000000','0.045490000000000','1.892590571125346','1.892174617153670','41.59539716759003','41.595397167590029','test','test','0.73'),('2018-11-22 23:59:59','2018-11-23 03:59:59','BNBETH','4h','0.045587000000000','0.045275000000000','1.892498136909418','1.879545772886435','41.51398725315151','41.513987253151512','test','test','0.68'),('2018-11-23 19:59:59','2018-11-23 23:59:59','BNBETH','4h','0.045059000000000','0.045154000000000','1.889619833793200','1.893603807787526','41.93656836133069','41.936568361330693','test','test','0.0'),('2018-11-26 23:59:59','2018-11-27 19:59:59','BNBETH','4h','0.045665000000000','0.044906000000000','1.890505161347494','1.859082990812889','41.39943416944037','41.399434169440369','test','test','1.66'),('2018-11-28 03:59:59','2018-11-28 07:59:59','BNBETH','4h','0.045050000000000','0.045126000000000','1.883522456784249','1.886699986345084','41.80959948466701','41.809599484667011','test','test','0.0'),('2018-11-28 11:59:59','2018-11-28 15:59:59','BNBETH','4h','0.045180000000000','0.044986000000000','1.884228574464434','1.876137818744069','41.70492639363512','41.704926393635120','test','test','0.42'),('2018-11-29 11:59:59','2018-11-29 19:59:59','BNBETH','4h','0.045600000000000','0.044709000000000','1.882430628748798','1.845648925016009','41.281373437473626','41.281373437473626','test','test','1.95'),('2018-11-29 23:59:59','2018-11-30 11:59:59','BNBETH','4h','0.045568000000000','0.044400000000000','1.874256916808178','1.826215921398418','41.13098922068508','41.130989220685080','test','test','2.56'),('2018-12-01 03:59:59','2018-12-01 07:59:59','BNBETH','4h','0.045132000000000','0.045176000000000','1.863581140050453','1.865397978882373','41.29179163454873','41.291791634548730','test','test','0.0'),('2018-12-02 03:59:59','2018-12-02 07:59:59','BNBETH','4h','0.044911000000000','0.044805000000000','1.863984882013103','1.859585460991674','41.50397190027171','41.503971900271708','test','test','0.23'),('2018-12-02 11:59:59','2018-12-03 03:59:59','BNBETH','4h','0.045113000000000','0.045149000000000','1.863007232897229','1.864493905483497','41.296460729661725','41.296460729661725','test','test','0.0'),('2018-12-03 07:59:59','2018-12-07 19:59:59','BNBETH','4h','0.045153000000000','0.048342000000000','1.863337604583067','1.994938685818321','41.2671938649274','41.267193864927400','test','test','0.0'),('2018-12-08 07:59:59','2018-12-08 15:59:59','BNBETH','4h','0.050503000000000','0.050597000000000','1.892582289302012','1.896104906477118','37.47465079900227','37.474650799002269','test','test','0.34'),('2018-12-08 19:59:59','2018-12-09 19:59:59','BNBETH','4h','0.051621000000000','0.049700000000000','1.893365093118702','1.822906280932169','36.67819478736759','36.678194787367588','test','test','3.72'),('2018-12-09 23:59:59','2018-12-17 19:59:59','BNBETH','4h','0.051031000000000','0.053070000000000','1.877707579299473','1.952733460708648','36.795429823038404','36.795429823038404','test','test','0.04'),('2018-12-17 23:59:59','2018-12-19 07:59:59','BNBETH','4h','0.053834000000000','0.052927000000000','1.894379997390401','1.862463315411854','35.18928553312777','35.189285533127773','test','test','1.68'),('2018-12-19 11:59:59','2018-12-20 03:59:59','BNBETH','4h','0.053425000000000','0.054186000000000','1.887287401395168','1.914170428301330','35.32592234712527','35.325922347125271','test','test','0.0'),('2018-12-20 07:59:59','2018-12-20 11:59:59','BNBETH','4h','0.054000000000000','0.053259000000000','1.893261407374315','1.867281653617568','35.06039643285768','35.060396432857679','test','test','1.37'),('2018-12-31 23:59:59','2019-01-01 03:59:59','BNBETH','4h','0.046469000000000','0.044641000000000','1.887488128761704','1.813238020100523','40.618221368260656','40.618221368260656','test','test','3.93'),('2019-01-08 07:59:59','2019-01-24 19:59:59','BNBETH','4h','0.042864000000000','0.055440000000000','1.870988104614775','2.419923024445762','43.649405202845635','43.649405202845635','test','test',NULL);
+/*!40000 ALTER TABLE `trades` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Final view structure for view `daily_profit`
+--
+
+/*!50001 DROP TABLE IF EXISTS `daily_profit`*/;
+/*!50001 DROP VIEW IF EXISTS `daily_profit`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `daily_profit` AS select left(`profit`.`sell_time`,10) AS `date`,`profit`.`interval` AS `interval`,sum(`profit`.`base_profit`) AS `profit`,sum(`profit`.`perc`) AS `perc` from `profit` where (`profit`.`perc` is not null) group by left(`profit`.`sell_time`,10) order by left(`profit`.`sell_time`,10),sum(`profit`.`base_profit`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `hour_balance`
+--
+
+/*!50001 DROP TABLE IF EXISTS `hour_balance`*/;
+/*!50001 DROP VIEW IF EXISTS `hour_balance`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `hour_balance` AS select `tt1`.`exchange_id` AS `exchange_id`,`tt1`.`usd` AS `usd1`,`tt1`.`coin` AS `coin`,`tt1`.`ctime` AS `ctime1`,`tt2`.`ctime` AS `ctime2`,`tt2`.`usd` AS `usd2`,(`tt1`.`usd` - `tt2`.`usd`) AS `USD_diff`,(`tt1`.`gbp` - `tt2`.`gbp`) AS `GBP_diff`,(`tt1`.`count` - `tt2`.`count`) AS `COUNT_diff`,(((`tt1`.`btc` - `tt2`.`btc`) / `tt1`.`btc`) * 100) AS `perc_change`,(`tt1`.`btc` - `tt2`.`btc`) AS `BTC_diff` from (`balance` `tt1` left join `balance` `tt2` on(((`tt1`.`coin` = `tt2`.`coin`) and (`tt1`.`exchange_id` = `tt2`.`exchange_id`)))) where ((`tt1`.`ctime` > (now() - interval 20 minute)) and (`tt2`.`ctime` < (now() - interval 45 minute)) and (`tt2`.`ctime` > (now() - interval 90 minute))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `monthly_profit`
+--
+
+/*!50001 DROP TABLE IF EXISTS `monthly_profit`*/;
+/*!50001 DROP VIEW IF EXISTS `monthly_profit`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `monthly_profit` AS select left(`profit`.`sell_time`,7) AS `date`,`profit`.`interval` AS `interval`,sum(`profit`.`base_profit`) AS `profit`,sum(`profit`.`perc`) AS `perc` from `profit` where (`profit`.`perc` is not null) group by left(`profit`.`sell_time`,7) order by left(`profit`.`sell_time`,7),sum(`profit`.`base_profit`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `profit`
+--
+
+/*!50001 DROP TABLE IF EXISTS `profit`*/;
+/*!50001 DROP VIEW IF EXISTS `profit`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `profit` AS select `trades`.`buy_time` AS `buy_time`,`trades`.`interval` AS `interval`,`trades`.`sell_time` AS `sell_time`,`trades`.`pair` AS `pair`,`trades`.`buy_price` AS `buy_price`,`trades`.`sell_price` AS `sell_price`,(((`trades`.`sell_price` - `trades`.`buy_price`) / `trades`.`buy_price`) * 100) AS `perc`,(`trades`.`base_out` - `trades`.`base_in`) AS `base_profit`,`trades`.`drawdown_perc` AS `drawdown_perc` from `trades` order by (((`trades`.`sell_price` - `trades`.`buy_price`) / `trades`.`buy_price`) * 100) desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `profitable`
+--
+
+/*!50001 DROP TABLE IF EXISTS `profitable`*/;
+/*!50001 DROP VIEW IF EXISTS `profitable`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `profitable` AS select `profit`.`pair` AS `pair`,count(0) AS `total`,sum((case when (`profit`.`perc` > 0) then 1 else 0 end)) AS `profit`,sum((case when (`profit`.`perc` < 0) then 1 else 0 end)) AS `loss`,((sum((case when (`profit`.`perc` > 0) then 1 else 0 end)) / count(0)) * 100) AS `perc_profitable` from `profit` group by `profit`.`pair` order by ((sum((case when (`profit`.`perc` > 0) then 1 else 0 end)) / count(0)) * 100) desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2020-04-30 17:07:32

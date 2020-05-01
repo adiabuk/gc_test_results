@@ -1,0 +1,25 @@
+2020-04-30 17:37:23 DEBUG greencandle.lib.logger Performaing serial run
+2020-04-30 17:37:23 DEBUG greencandle.lib.mysql Starting Mysql with interval 4h, test=True
+2020-04-30 17:37:23 INFO greencandle.lib.mysql Deleting all trades from mysql
+2020-04-30 17:37:23 DEBUG greencandle.lib.mysql Running Mysql command: delete from trades;
+2020-04-30 17:37:23 DEBUG greencandle.lib.redis_conn Starting Redis with interval 4h Test, db=0
+2020-04-30 17:37:23 DEBUG greencandle.lib.redis_conn Starting Redis with interval 4h Test, db=1
+2020-04-30 17:37:23 DEBUG greencandle.lib.redis_conn Serial run HCETH 4h
+2020-04-30 17:37:23 DEBUG greencandle.lib.redis_conn Starting Redis with interval 4h Test, db=0
+2020-04-30 17:37:23 ERROR greencandle.lib.redis_conn Got Error: 
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/site-packages/greencandle-0.32-py3.7.egg/greencandle/lib/logger.py", line 74, in new_func
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.7/site-packages/greencandle-0.32-py3.7.egg/greencandle/lib/run.py", line 80, in perform_data
+    filename = glob("{0}/{1}_{2}.p*".format(data_dir, pair, interval))[0]
+IndexError: list index out of range
+2020-04-30 17:38:08 DEBUG greencandle.lib.mysql Starting Mysql with interval 4h, test=True
+2020-04-30 17:38:08 DEBUG greencandle.lib.mysql Running Mysql command: select perc, pair, week(sell_time) as week from profit
+2020-04-30 17:38:08 DEBUG greencandle.lib.mysql Running Mysql command: select perc, pair, month(sell_time) as month from profit
+2020-04-30 17:38:08 DEBUG greencandle.lib.mysql Running Mysql command: select pair, hour(timediff(sell_time,buy_time)) as hours from                        trades where sell_time != '0000-00-00 00:00:00' group by pair;
+2020-04-30 17:38:08 DEBUG greencandle.lib.mysql Running Mysql command: select pair, sum(perc)  as perc, month(sell_time) as month from                         profit where sell_time != '0000-00-00 00:00:00'  group by pair, month                         order by month,perc;
+2020-04-30 17:38:08 DEBUG greencandle.lib.mysql Running Mysql command: select pair, sum(perc) as perc from profit where                         sell_time != '0000-00-00 00:00:00' group by pair;
+2020-04-30 17:38:08 DEBUG greencandle.lib.mysql Running Mysql command: select buy_time, sell_time, buy_price, sell_price, base_profit,                           drawdown_perc from profit;
+2020-04-30 17:38:09 DEBUG greencandle.lib.mysql Running Mysql command: select pair, sum(hour(timediff(sell_time,buy_time)))                         as hours from trades where sell_time                         != '0000-00-00 00:00:00' group by pair
+2020-04-30 17:38:09 DEBUG greencandle.lib.mysql Running Mysql command: select (select sum(base_profit) from profit where base_profit                                  >0)/-(select sum(base_profit) from profit where base_profit <0)                                  as profit_factor
+2020-04-30 17:38:09 DEBUG greencandle.lib.mysql Running Mysql command: select (select buy_price from profit order by buy_time limit 1)                                    as first_buy, (select sell_price from profit order by                                    buy_time desc limit 1) as last_sell, (select                                    (last_sell-first_buy)/first_buy)*100 as buy_hold
