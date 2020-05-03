@@ -1,44 +1,62 @@
 #!/usr/bin/env python
+#pylint: disable=redefined-builtin
+"""
+Script to compare results of various strategies and display pairs suitable for trading based on
+minimum consistant results across the available years
+"""
 
-import sys
 from collections import defaultdict
 import numpy as np
-results = {}
 
-dirs = ["2ma_4h_no-stop", "2ma_4h_no-stop_new", "2ma_4h_stop-loss", "4ma_4h_no-stop",
-        "4ma_4h_no-stop_new", "4ma_4h_stop-loss", "5ma_4h_no-stop", "5ma_4h_no-stop_new"]
 
-years = ("2018", "2019")
+def main():
+    """
+    Using results files (ending in _percs.txt) in given directories, sort data and find pairs in a
+    single strategy where results for all years are above min_perc.  Use numpy for easily comparing
+    each item in the array
+    """
+    results = {}
 
-for year in years:
-    results[year] = defaultdict(dict)
+    dirs = ["2ma_4h_no-stop_new", "4ma_4h_no-stop_new", "5ma_4h_no-stop_new"]
+    years = ("2018", "2019")
+    min_perc = 50
 
-for dir in dirs:
     for year in years:
+        results[year] = defaultdict(dict)
 
-        file = "{}_percs.txt".format(year)
-        path = "{0}/{1}".format(dir, file)
-        with open(path, 'r') as f:
-            for row in f:
-                data = row.split()
-                try:
-                    results[year][dir][data[0]] = data[1]
-                except IndexError:
-                    pass
-pairs = results[max(years)][min(dirs)].keys()
-for pair in pairs:
     for dir in dirs:
-        local_result = []
         for year in years:
-            try:
-                local_result.append(float(results[year][dir][pair]))
-            except KeyError:
-                pass
-        A_1 = np.array(local_result)
-        qualify = bool(((A_1 >= 50).sum() == A_1.size).astype(np.int) and local_result) and len(local_result) > 1
-        if qualify:
-            print(*local_result, sep=' ', end=' ')
-            print(dir, pair)
-        else:
-            print(*local_result, sep=' ', end='')
-            print(dir, pair, "skip")
+
+            file = "{}_percs.txt".format(year)
+            path = "{0}/{1}".format(dir, file)
+            with open(path, 'r') as data:
+                for row in data:
+                    data = row.split()
+                    try:
+                        results[year][dir][data[0]] = data[1]
+                    except IndexError:
+                        pass
+    pairs = results[max(years)][min(dirs)].keys()
+    for pair in pairs:
+        for dir in dirs:
+            local_result = []
+            for year in years:
+                try:
+                    local_result.append(float(results[year][dir][pair]))
+                except KeyError:
+                    pass
+            array = np.array(local_result)
+            # if each item is at least min_perc and there are at least 2 items (years) of data
+            qualify = bool(((array >= min_perc).sum() == array.size).astype(np.int) \
+                    and local_result) and len(local_result) >= 2
+            if qualify:
+                # qualifying entries
+                print(*local_result, sep=' ', end=' ')
+                print(dir, pair)
+            else:
+                # skipped entries
+                print(*local_result, sep=' ', end='')
+                print(dir, pair, "skip")
+
+if __name__ == '__main__':
+    main()
