@@ -5,6 +5,7 @@ Script to compare results of various strategies and display pairs suitable for t
 minimum consistant results across the available years
 """
 
+import os
 from collections import defaultdict
 import numpy as np
 
@@ -17,10 +18,16 @@ def main():
     """
     results = {}
 
-    dirs = ["2ma_4h_no-stop_new", "4ma_4h_no-stop_new", "5ma_4h_no-stop_new"]
+    dirs = []
+    path = '.'
+    directory_contents = os.listdir(path)
+    for item in directory_contents:
+        if os.path.isdir(item) and not item.startswith('.'):
+            dirs.append(item)
+    print(dirs)
     years = ("2018", "2019")
-    min_perc = 50
-
+    min_perc = 0
+    pairs = set()
     for year in years:
         results[year] = defaultdict(dict)
 
@@ -29,14 +36,18 @@ def main():
 
             file = "{}_percs.txt".format(year)
             path = "{0}/{1}".format(dir, file)
-            with open(path, 'r') as data:
-                for row in data:
-                    data = row.split()
-                    try:
-                        results[year][dir][data[0]] = data[1]
-                    except IndexError:
-                        pass
-    pairs = results[max(years)][min(dirs)].keys()
+            try:
+                with open(path, 'r') as data:
+                    for row in data:
+                        data = row.split()
+                        try:
+                            pairs.add(data[0])
+                            results[year][dir][data[0]] = data[1]
+                        except IndexError:
+                            pass
+            except FileNotFoundError:
+                pass
+
     for pair in pairs:
         for dir in dirs:
             local_result = []
